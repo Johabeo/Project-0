@@ -1,28 +1,19 @@
 public class CheckingAccount {
 
     private int bankAccountNumber;
-    private String firstName;
-    private String lastName;
-    private String email;
 
-    public CheckingAccount(int bankAccountNumber, String firstName, String lastName, String email) {
+    private int userId;
+
+    private int status;
+
+    private int balance;
+
+    public CheckingAccount(int bankAccountNumber, int userId, int status, int balance) {
         this.bankAccountNumber = bankAccountNumber;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
+        this.userId = userId;
+        this.status = status;
+        this.balance = balance;
     }
-
-    @Override
-    public String toString() {
-        return "CheckingAccount{" +
-                "bankAccountNumber=" + bankAccountNumber +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", email='" + email + '\'' +
-                '}';
-    }
-
-
 
     public int getBankAccountNumber() {
         return bankAccountNumber;
@@ -32,29 +23,27 @@ public class CheckingAccount {
         this.bankAccountNumber = bankAccountNumber;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public int getUserId() {
+        return userId;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
-    public String getLastName() {
-        return lastName;
+    public int getStatus() {
+        return status;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setStatus(int status) {
+        this.status = status;
     }
 
-    public String getEmail() {
-        return email;
+    public int getBalance() {
+        return balance;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setBalance(int balance) {
+        this.balance = balance;
     }
-
-
 }

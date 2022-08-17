@@ -3,12 +3,40 @@ public class User {
     private String name;
     private String email;
 
+    private String password;
+
+    public int getLoginType() {
+        return loginType;
+    }
+
+    public void setLoginType(int loginType) {
+        this.loginType = loginType;
+    }
+
+    private int loginType;
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     public User(){}
 
-    public User(int id, String name, String email) {
+    public User(int id, String name, String email, String password) {
         this.id = id;
         this.name = name;
         this.email = email;
+        this.password = password;
+    }
+
+    public User(String email, String password) {
+        this.id = 1;
+        this.name = "basic";
+        this.email = email;
+        this.password = password;
     }
 
     public int getId() {
