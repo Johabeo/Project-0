@@ -6,6 +6,7 @@ public class Main {
     public static void main(String[] args) throws SQLException {
 
         UserDao dao = UserDaoFactory.getUserDao();
+        AccountDao accountDao = AccountDaoFactory.getAccountDao();
         Scanner scanner = new Scanner(System.in);
 
         boolean flag = true;
@@ -23,7 +24,6 @@ public class Main {
             switch (input) {
 
                 case 1: {   // 2nd menu
-
                     System.out.print("Enter Email: ");
                     String email = scanner.next();
                     System.out.print("Enter Password: ");
@@ -31,75 +31,84 @@ public class Main {
                     int identity = dao.Login(email, password);
 
                     if (identity == 1) {
-                        System.out.println("_______________________________");
-                        System.out.println("Select from the options below");
-                        System.out.println("_______________________________");
-                        System.out.println("PRESS 1: Add Customer Bank Account");
-                        System.out.println("PRESS 2: Make Withdrawal");
-                        System.out.println("PRESS 3: Make Deposit");
-                        System.out.println("PRESS 4: Transfer funds");
-                        System.out.println("PRESS 4: Exit");
-                        System.out.println("_______________________________");
-                        System.out.print("Enter Number: ");
-                        int input3 = scanner.nextInt();
-                        switch (input3) {
-                            case 1: {
-                                System.out.print("Enter Starting Balance: ");
-                                String balance = scanner.next();
-                                User user = new User();
-                                //user.setBalance(balance);
-                                dao.addUser(user);
-                                break;
-                            }
+                        boolean flag2 = true;
+                        while (flag2){
+                            System.out.println("_______________________________");
+                            System.out.println("Select from the options below");
+                            System.out.println("_______________________________");
+                            System.out.println("PRESS 1: Add Customer Bank Account");
+                            System.out.println("PRESS 2: View Balance");
+                            System.out.println("PRESS 2: Make Withdrawal");
+                            System.out.println("PRESS 3: Make Deposit");
+                            System.out.println("PRESS 4: Transfer funds");
+                            System.out.println("PRESS 4: Exit");
+                            System.out.println("_______________________________");
+                            System.out.print("Enter Number: ");
+                            int input3 = scanner.nextInt();
+                            switch (input3) {
+                                case 1: {
+                                    System.out.print("Enter Starting Balance: ");
+                                    int balance = scanner.nextInt();
+                                    int userId = dao.getId(email, password);
+                                    accountDao.addAccount(balance, userId);
+                                    break;
+                                }
 
-                            case 2: {
-                                // edit account value, negative
-                                break;
-                            }
+                                case 2: {
+                                    System.out.print("Enter Id: ");
+                                    int id = scanner.nextInt();
+                                    int balance = accountDao.getAccountBalanceById(id);
+                                    System.out.println(balance);
+                                    break;
+                                }
 
-                            case 3: {
-                                // edit account value, positive but same as 3 ultimately
-                                break;
-                            }
+                                case 3: {
 
-                            case 4: {
-                                // back
-                                break;
+                                    break;
+                                }
+
+                                case 4: {
+                                    flag2 = false;
+                                    break;
+                                }
                             }
                         }
                     }
 
                     else if (identity == 2){
                         //Employee Menu
-                        System.out.println("_______________________________");
-                        System.out.println("Select from the options below");
-                        System.out.println("_______________________________");
-                        System.out.println("PRESS 1: View Customer Accounts");
-                        System.out.println("PRESS 2: Approve or Reject Customer Accounts");
-                        System.out.println("PRESS 3: View All Customer Transactions");
-                        System.out.println("PRESS 4: Exit");
-                        System.out.println("_______________________________");
-                        System.out.print("Enter Number: ");
-                        int input4 = scanner.nextInt();
-                        switch (input4) {
-                            case 1: {
-                                // display account # column by user
-                                break;
-                            }
+                        boolean flag3 = true;
+                        while (flag3) {
+                            System.out.println("_______________________________");
+                            System.out.println("Select from the options below");
+                            System.out.println("_______________________________");
+                            System.out.println("PRESS 1: View Customer Accounts");
+                            System.out.println("PRESS 2: Approve or Reject Customer Accounts");
+                            System.out.println("PRESS 3: View All Customer Transactions");
+                            System.out.println("PRESS 4: Exit");
+                            System.out.println("_______________________________");
+                            System.out.print("Enter Number: ");
+                            int input4 = scanner.nextInt();
+                            switch (input4) {
+                                case 1: {
+                                    // display account # column by user
+                                    break;
+                                }
 
-                            case 2: {
-                                // delete account
-                                break;
-                            }
+                                case 2: {
+                                    // delete account
+                                    break;
+                                }
 
-                            case 3: {
-                                // open log
-                                break;
-                            }
+                                case 3: {
+                                    // open log
+                                    break;
+                                }
 
-                            case 4: {
-                                // back
-                                break;
+                                case 4: {
+                                    flag3 = false;
+                                    break;
+                                }
                             }
                         }
                     }
@@ -107,6 +116,7 @@ public class Main {
                     else {
                         System.out.println("Login is false");
                     }
+                    break;
                 }
 
                 case 2: {   // add & validate if the user wants to be a customer or employee
@@ -180,6 +190,7 @@ public class Main {
                     flag = false;
                     break;
                 }
+
                 default: System.out.println("Choose between 1 - 6");
             }
         }

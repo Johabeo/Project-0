@@ -120,4 +120,15 @@ public class UserDaoImpl implements UserDao {
         }
         return 3;
     }
+
+    @Override
+    public int getId(String email, String password) throws SQLException {
+        User user = new User();
+        String sql = "select * from user where email = '" + email + "' and password = '" + password +"'";
+        Statement statement = connection.createStatement();
+        ResultSet resultSet = statement.executeQuery(sql);
+        resultSet.next();
+        int loginType = resultSet.getInt(1);
+        return loginType;
+    }
 }

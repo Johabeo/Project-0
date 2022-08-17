@@ -10,15 +10,16 @@ public class AccountDaoImpl implements AccountDao {
     }
 
     @Override
-    public void addAccount(int balance) throws SQLException {
-        String sql = "insert into accounts (balance) values (?)";
+    public void addAccount(int balance, int userId) throws SQLException {
+        String sql = "insert into accounts (balance, userId) values (?, ?)";
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
         preparedStatement.setInt(1, balance);
+        preparedStatement.setInt(2, userId);
         int count = preparedStatement.executeUpdate();
         if (count > 0) {
             System.out.println("Account Made");
         } else {
-            System.out.println("OOps!, something went wrong");
+            System.out.println("oops!, something went wrong");
         }
     }
 
@@ -69,7 +70,7 @@ public class AccountDaoImpl implements AccountDao {
     @Override
     public Account getAccountById(int id) throws SQLException {
         Account account = new Account();
-        String sql = "select * from user where userId = " + id;
+        String sql = "select * from accounts where userId = " + id;
         Statement statement = connection.createStatement();
         ResultSet resultSet = statement.executeQuery(sql);
         resultSet.next();
@@ -83,5 +84,15 @@ public class AccountDaoImpl implements AccountDao {
             System.out.println("no record found");
         }
         return account;
+    }
+
+    @Override
+    public int getAccountBalanceById(int id) throws SQLException {
+        Account account = new Account();
+        String sql = "select * from accounts where userId = " + id;
+        Statement statement = connection.createStatement();
+        ResultSet resultSet = statement.executeQuery(sql);
+        resultSet.next();
+        return resultSet.getInt(4);
     }
 }
