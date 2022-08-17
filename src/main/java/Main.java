@@ -118,7 +118,7 @@ public class Main {
                                     int id2 = scanner.nextInt();
                                     System.out.print("Enter amount: ");
                                     int amount = scanner.nextInt();
-                                    if( amount <= 1){
+                                    if( amount <= 0){
                                         System.out.println("amount must be positive");
                                         break;
                                     }
@@ -126,7 +126,9 @@ public class Main {
                                     int newBalance = balance - amount;
                                     if (newBalance <= 0){
                                         System.out.println("not enough money in the account");
+                                        break;
                                     }
+                                    accountDao.updateAccountBalance(id, newBalance);
                                     accountDao.updateAccountTransfer(id2, amount);
                                     break;
                                 }

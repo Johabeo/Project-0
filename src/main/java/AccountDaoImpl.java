@@ -25,7 +25,7 @@ public class AccountDaoImpl implements AccountDao {
 
     @Override
     public void updateAccountBalance(int id, int modifier) throws SQLException {
-        String sql = "Update accounts set balance = ? where userId = ?";
+        String sql = "Update accounts set balance = ? where id = ?";
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
         preparedStatement.setInt(1, modifier);
         preparedStatement.setInt(2, id);
@@ -39,7 +39,7 @@ public class AccountDaoImpl implements AccountDao {
 
     @Override
     public void updateAccountTransfer(int id, int modifier) throws SQLException {
-        String sql = "Update accounts set transfer = ? where userId = ?";
+        String sql = "Update accounts set transfer = ? where id = ?";
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
         preparedStatement.setInt(1, modifier);
         preparedStatement.setInt(2, id);
@@ -53,9 +53,9 @@ public class AccountDaoImpl implements AccountDao {
 
     @Override
     public void updateAccountStatus(int id) throws SQLException {
-        String sql = "Update user set status = ?";
+        String sql = "Update accounts set status = ?";
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
-        preparedStatement.setInt(2, id);
+        preparedStatement.setInt(1, id);
         int count = preparedStatement.executeUpdate();
         if (count > 0) {
             System.out.println("Account updated");
@@ -133,21 +133,21 @@ public class AccountDaoImpl implements AccountDao {
     @Override
     public int getAccountBalanceById(int id) throws SQLException {
         Account account = new Account();
-        String sql = "select * from accounts where userId = " + id;
+        String sql = "select * from accounts where id = " + id;
         Statement statement = connection.createStatement();
         ResultSet resultSet = statement.executeQuery(sql);
         resultSet.next();
-        return resultSet.getInt(5);
+        return resultSet.getInt(4);
     }
 
     @Override
     public int getAccountTransferById(int id) throws SQLException {
         Account account = new Account();
-        String sql = "select * from accounts where userId = " + id;
+        String sql = "select * from accounts where id = " + id;
         Statement statement = connection.createStatement();
         ResultSet resultSet = statement.executeQuery(sql);
         resultSet.next();
-        return resultSet.getInt(4);
+        return resultSet.getInt(5);
     }
 
     @Override
