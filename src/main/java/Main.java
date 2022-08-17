@@ -44,7 +44,11 @@ public class Main {
                         int input3 = scanner.nextInt();
                         switch (input3) {
                             case 1: {
-                                // add account to pending
+                                System.out.print("Enter Starting Balance: ");
+                                String balance = scanner.next();
+                                User user = new User();
+                                //user.setBalance(balance);
+                                dao.addUser(user);
                                 break;
                             }
 
@@ -128,8 +132,7 @@ public class Main {
                     int identity = dao.Login(email, password);
 
                     if (identity == 1) {
-                        User user = new User(email, password);
-                        dao.upgradeUser(user);
+                        dao.upgradeUser(email, password);
                     }
 
                     if (identity == 2) {
@@ -146,7 +149,7 @@ public class Main {
 //                    String password = scanner.next();
 //                    User user = new User(id, name, email, password);
 //                    dao.updateUser(user);
-                    else {
+                    else if (identity == 3) {
                         System.out.println("Wrong credentials");
                     }
                     break;

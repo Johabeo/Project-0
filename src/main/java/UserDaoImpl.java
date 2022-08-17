@@ -41,11 +41,11 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public void upgradeUser(User user) throws SQLException {
+    public void upgradeUser(String name, String email) throws SQLException {
         String sql = "Update user set loginType = 2 where email = ? and password = ?";
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
-        preparedStatement.setString(1, user.getName());
-        preparedStatement.setString(2, user.getEmail());
+        preparedStatement.setString(1, name);
+        preparedStatement.setString(2, email);
         int count = preparedStatement.executeUpdate();
         if (count > 0) {
             System.out.println("Welcome to the team!");

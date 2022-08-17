@@ -1,4 +1,4 @@
-public class CheckingAccount {
+public class Account {
 
     private int bankAccountNumber;
 
@@ -8,12 +8,14 @@ public class CheckingAccount {
 
     private int balance;
 
-    public CheckingAccount(int bankAccountNumber, int userId, int status, int balance) {
+    public Account(int bankAccountNumber, int userId, int status, int balance) {
         this.bankAccountNumber = bankAccountNumber;
         this.userId = userId;
         this.status = status;
         this.balance = balance;
     }
+
+    public Account () {}
 
     public int getBankAccountNumber() {
         return bankAccountNumber;
