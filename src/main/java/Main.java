@@ -19,7 +19,8 @@ public class Main {
             System.out.println("PRESS 2: Create Account");
             System.out.println("PRESS 3: Apply For Open Positions");
             System.out.println("PRESS 4: Exit");
-            System.out.println("_______________________________\n");
+            System.out.println("_______________________________");
+            System.out.print("Enter Number: ");
             int input = scanner.nextInt();
             switch (input) {
 
@@ -38,10 +39,11 @@ public class Main {
                             System.out.println("_______________________________");
                             System.out.println("PRESS 1: Add Customer Bank Account");
                             System.out.println("PRESS 2: View Balance");
-                            System.out.println("PRESS 2: Make Withdrawal");
-                            System.out.println("PRESS 3: Make Deposit");
-                            System.out.println("PRESS 4: Transfer funds");
-                            System.out.println("PRESS 4: Exit");
+                            System.out.println("PRESS 3: Make Withdrawal");
+                            System.out.println("PRESS 4: Make Deposit");
+                            System.out.println("PRESS 5: Post Transfer");
+                            System.out.println("PRESS 6: Accept Transfers");
+                            System.out.println("PRESS 7: Exit");
                             System.out.println("_______________________________");
                             System.out.print("Enter Number: ");
                             int input3 = scanner.nextInt();
@@ -63,11 +65,93 @@ public class Main {
                                 }
 
                                 case 3: {
-
+                                    System.out.print("Enter Id: ");
+                                    int id = scanner.nextInt();
+                                    if (accountDao.getAccountStatusById(id) == 1){
+                                        System.out.println("Account Pending");
+                                        break;
+                                    }
+                                    int balance = accountDao.getAccountBalanceById(id);
+                                    System.out.println("Current Balance: " + balance);
+                                    System.out.print("Enter Withdrawal Amount: ");
+                                    int withdrawal = scanner.nextInt();
+                                    if (withdrawal <= 0){
+                                        System.out.println("please enter a positive amount");
+                                        break;
+                                    }
+                                    int newBalance = balance - withdrawal;
+                                    if (newBalance <= 0){
+                                        System.out.println("not enough money in the account");
+                                    }
+                                    else if (newBalance >= 0){
+                                        accountDao.updateAccountBalance(id, newBalance);
+                                        System.out.println("New Balance: " + accountDao.getAccountBalanceById(id));
+                                    }
                                     break;
                                 }
 
                                 case 4: {
+                                    System.out.print("Enter Id: ");
+                                    int id = scanner.nextInt();
+                                    if (accountDao.getAccountStatusById(id) == 1){
+                                        System.out.println("Account Pending");
+                                        break;
+                                    }
+                                    int balance = accountDao.getAccountBalanceById(id);
+                                    System.out.println("Current Balance: " + balance);
+                                    System.out.print("Enter Deposit Amount: ");
+                                    int deposit = scanner.nextInt();
+                                    if (deposit <= 0){
+                                        System.out.println("please enter a positive amount");
+                                        break;
+                                    }
+                                    int newBalance = balance + deposit;
+                                    accountDao.updateAccountBalance(id, newBalance);
+                                    System.out.println("New Balance: " + accountDao.getAccountBalanceById(id));
+                                    break;
+                                }
+
+                                case 5: {
+                                    System.out.print("Enter Id of source account: ");
+                                    int id = scanner.nextInt();
+                                    System.out.print("Enter Id of account you are transferring to: ");
+                                    int id2 = scanner.nextInt();
+                                    System.out.print("Enter amount: ");
+                                    int amount = scanner.nextInt();
+                                    if( amount <= 1){
+                                        System.out.println("amount must be positive");
+                                        break;
+                                    }
+                                    int balance = accountDao.getAccountBalanceById(id);
+                                    int newBalance = balance - amount;
+                                    if (newBalance <= 0){
+                                        System.out.println("not enough money in the account");
+                                    }
+                                    accountDao.updateAccountTransfer(id2, amount);
+                                    break;
+                                }
+
+                                case 6: {
+                                    System.out.print("Enter Id of source account: ");
+                                    int id = scanner.nextInt();
+                                    int transfer = accountDao.getAccountTransferById(id);
+                                    System.out.println("You have been offered " + transfer);
+                                    System.out.println("PRESS 1: Approve");
+                                    System.out.println("PRESS 2: Reject");
+                                    int decision = scanner.nextInt();
+                                    if (decision == 1){
+                                        accountDao.updateAccountTransfer(id, 0);
+                                        accountDao.updateAccountBalance(id, transfer);
+                                        System.out.println("New Balance: " + accountDao.getAccountBalanceById(id));
+                                    }
+                                    else if (decision == 2){
+                                        accountDao.updateAccountTransfer(id, 0);
+                                        System.out.println("Transfer Cancelled");
+                                    }
+                                    break;
+                                }
+
+                                case 7: {
                                     flag2 = false;
                                     break;
                                 }
@@ -92,11 +176,28 @@ public class Main {
                             switch (input4) {
                                 case 1: {
                                     // display account # column by user
+                                    System.out.print("Enter Id: ");
+                                    int Id = scanner.nextInt();
+                                    System.out.println(accountDao.getAccounts(Id));
                                     break;
                                 }
 
                                 case 2: {
                                     // delete account
+                                    System.out.println(accountDao.getPendingAccounts());
+                                    System.out.print("Enter Id: ");
+                                    int Id = scanner.nextInt();
+                                    System.out.println("PRESS 1: Approve");
+                                    System.out.println("PRESS 2: Reject");
+                                    int decision = scanner.nextInt();
+                                    if (decision == 1){
+                                        accountDao.updateAccountStatus(0);
+                                        System.out.println("Account confirmed");
+                                    }
+                                    else if (decision == 2){
+                                        accountDao.deleteAccount(Id);
+                                        System.out.println("Account Deleted");
+                                    }
                                     break;
                                 }
 
