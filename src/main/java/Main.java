@@ -177,11 +177,13 @@ public class Main {
                                 }
 
                                 case 6: {
-                                    System.out.print("Enter Id of source account: ");
+                                    System.out.println("Available Accounts:");
+                                    System.out.println(accountDao.getActiveAccountsById(userId));
+                                    System.out.print("Enter Account#: ");
                                     int id = scanner.nextInt();
                                     int transfer = 0;
                                     try {
-                                        transfer = accountDao.getAccountBalanceById(id);
+                                        transfer = accountDao.getAccountTransferById(id);
                                     } catch (Exception SQLException){
                                         System.out.println("Please enter a valid Account Number");
                                         break;
@@ -230,6 +232,7 @@ public class Main {
                             switch (input4) {
                                 case 1: {
                                     // display account # column by user
+                                    System.out.println(dao.getUsers());
                                     System.out.print("Enter Id: ");
                                     int Id = scanner.nextInt();
                                     System.out.println("_______________________________");
