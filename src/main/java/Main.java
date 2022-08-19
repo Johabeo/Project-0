@@ -29,12 +29,18 @@ public class Main {
                     String email = scanner.next();
                     System.out.print("Enter Password: ");
                     String password = scanner.next();
-                    int identity = dao.Login(email, password);
+                    int identity = 3;
+                    try{
+                        identity = dao.Login(email, password);
+                    } catch (Exception SQLException){
+                    }
 
                     if (identity == 1) {
                         boolean flag2 = true;
                         while (flag2){
+                            int userId = dao.getId(email, password);
                             System.out.println("_______________________________");
+                            System.out.println("Welcome User #" + userId );
                             System.out.println("Select from the options below");
                             System.out.println("_______________________________");
                             System.out.println("PRESS 1: Add Customer Bank Account");
@@ -43,7 +49,7 @@ public class Main {
                             System.out.println("PRESS 4: Make Deposit");
                             System.out.println("PRESS 5: Post Transfer");
                             System.out.println("PRESS 6: Accept Transfers");
-                            System.out.println("PRESS 7: Exit");
+                            System.out.println("PRESS 7: Log Out");
                             System.out.println("_______________________________");
                             System.out.print("Enter Number: ");
                             int input3 = scanner.nextInt();
@@ -51,30 +57,48 @@ public class Main {
                                 case 1: {
                                     System.out.print("Enter Starting Balance: ");
                                     int balance = scanner.nextInt();
-                                    int userId = dao.getId(email, password);
+
                                     accountDao.addAccount(balance, userId);
                                     break;
                                 }
 
                                 case 2: {
-                                    System.out.print("Enter Id: ");
+                                    System.out.println(accountDao.getActiveAccountsById(userId));
+                                    System.out.print("Enter Account#: ");
                                     int id = scanner.nextInt();
-                                    int balance = accountDao.getAccountBalanceById(id);
-                                    System.out.println(balance);
+                                    System.out.println("_______________________________");
+                                    int balance = 0;
+                                    try {
+                                        balance = accountDao.getAccountBalanceById(id);
+                                    } catch (Exception SQLException){
+                                        System.out.println("Please enter a valid Account Number");
+                                        break;
+                                    }
+                                    System.out.println("\nTotal Balance: $" + balance);
                                     break;
                                 }
 
                                 case 3: {
-                                    System.out.print("Enter Id: ");
+                                    System.out.println("Available Accounts:");
+                                    System.out.println(accountDao.getActiveAccountsById(userId));
+                                    System.out.print("Enter Account#: ");
                                     int id = scanner.nextInt();
+                                    System.out.println("_______________________________");
+                                    int balance = 0;
+                                    try {
+                                        balance = accountDao.getAccountBalanceById(id);
+                                    } catch (Exception SQLException){
+                                        System.out.println("Please enter a valid Account Number");
+                                        break;
+                                    }
                                     if (accountDao.getAccountStatusById(id) == 1){
                                         System.out.println("Account Pending");
                                         break;
                                     }
-                                    int balance = accountDao.getAccountBalanceById(id);
                                     System.out.println("Current Balance: " + balance);
                                     System.out.print("Enter Withdrawal Amount: ");
                                     int withdrawal = scanner.nextInt();
+                                    System.out.println("_______________________________");
                                     if (withdrawal <= 0){
                                         System.out.println("please enter a positive amount");
                                         break;
@@ -91,13 +115,22 @@ public class Main {
                                 }
 
                                 case 4: {
-                                    System.out.print("Enter Id: ");
+                                    System.out.println("Available Accounts:");
+                                    System.out.println(accountDao.getActiveAccountsById(userId));
+                                    System.out.print("Enter Account#: ");
                                     int id = scanner.nextInt();
+                                    System.out.println("_______________________________");
+                                    int balance = 0;
+                                    try {
+                                        balance = accountDao.getAccountBalanceById(id);
+                                    } catch (Exception SQLException){
+                                        System.out.println("Please enter a valid Account Number");
+                                        break;
+                                    }
                                     if (accountDao.getAccountStatusById(id) == 1){
                                         System.out.println("Account Pending");
                                         break;
                                     }
-                                    int balance = accountDao.getAccountBalanceById(id);
                                     System.out.println("Current Balance: " + balance);
                                     System.out.print("Enter Deposit Amount: ");
                                     int deposit = scanner.nextInt();
@@ -112,17 +145,26 @@ public class Main {
                                 }
 
                                 case 5: {
+                                    System.out.println("Available Accounts:");
+                                    System.out.println(accountDao.getActiveAccountsById(userId));
                                     System.out.print("Enter Id of source account: ");
                                     int id = scanner.nextInt();
                                     System.out.print("Enter Id of account you are transferring to: ");
                                     int id2 = scanner.nextInt();
                                     System.out.print("Enter amount: ");
                                     int amount = scanner.nextInt();
+                                    System.out.println("_______________________________");
                                     if( amount <= 0){
                                         System.out.println("amount must be positive");
                                         break;
                                     }
-                                    int balance = accountDao.getAccountBalanceById(id);
+                                    int balance = 0;
+                                    try {
+                                        balance = accountDao.getAccountBalanceById(id);
+                                    } catch (Exception SQLException){
+                                        System.out.println("Please enter a valid Account Number");
+                                        break;
+                                    }
                                     int newBalance = balance - amount;
                                     if (newBalance <= 0){
                                         System.out.println("not enough money in the account");
@@ -130,20 +172,29 @@ public class Main {
                                     }
                                     accountDao.updateAccountBalance(id, newBalance);
                                     accountDao.updateAccountTransfer(id2, amount);
+                                    System.out.println("New Balance: " + accountDao.getAccountBalanceById(id));
                                     break;
                                 }
 
                                 case 6: {
                                     System.out.print("Enter Id of source account: ");
                                     int id = scanner.nextInt();
-                                    int transfer = accountDao.getAccountTransferById(id);
+                                    int transfer = 0;
+                                    try {
+                                        transfer = accountDao.getAccountBalanceById(id);
+                                    } catch (Exception SQLException){
+                                        System.out.println("Please enter a valid Account Number");
+                                        break;
+                                    }
                                     System.out.println("You have been offered " + transfer);
                                     System.out.println("PRESS 1: Approve");
                                     System.out.println("PRESS 2: Reject");
+                                    System.out.print("Enter Number: ");
                                     int decision = scanner.nextInt();
+                                    System.out.println("_______________________________");
                                     if (decision == 1){
                                         accountDao.updateAccountTransfer(id, 0);
-                                        accountDao.updateAccountBalance(id, transfer);
+                                        accountDao.updateAccountBalance(id, accountDao.getAccountBalanceById(id) + transfer);
                                         System.out.println("New Balance: " + accountDao.getAccountBalanceById(id));
                                     }
                                     else if (decision == 2){
@@ -166,12 +217,13 @@ public class Main {
                         boolean flag3 = true;
                         while (flag3) {
                             System.out.println("_______________________________");
+                            System.out.println("Welcome Admin #" + dao.getId(email, password) );
                             System.out.println("Select from the options below");
                             System.out.println("_______________________________");
                             System.out.println("PRESS 1: View Customer Accounts");
                             System.out.println("PRESS 2: Approve or Reject Customer Accounts");
                             System.out.println("PRESS 3: View All Customer Transactions");
-                            System.out.println("PRESS 4: Exit");
+                            System.out.println("PRESS 4: Log Out");
                             System.out.println("_______________________________");
                             System.out.print("Enter Number: ");
                             int input4 = scanner.nextInt();
@@ -180,6 +232,7 @@ public class Main {
                                     // display account # column by user
                                     System.out.print("Enter Id: ");
                                     int Id = scanner.nextInt();
+                                    System.out.println("_______________________________");
                                     System.out.println(accountDao.getAccounts(Id));
                                     break;
                                 }
@@ -191,7 +244,9 @@ public class Main {
                                     int Id = scanner.nextInt();
                                     System.out.println("PRESS 1: Approve");
                                     System.out.println("PRESS 2: Reject");
+                                    System.out.print("Enter Number: ");
                                     int decision = scanner.nextInt();
+                                    System.out.println("_______________________________");
                                     if (decision == 1){
                                         accountDao.updateAccountStatus(0);
                                         System.out.println("Account confirmed");
@@ -216,8 +271,8 @@ public class Main {
                         }
                     }
 
-                    else {
-                        System.out.println("Login is false");
+                    if (identity == 3) {
+                        System.out.println("Login is invalid, please check email and password.");
                     }
                     break;
                 }
@@ -229,6 +284,7 @@ public class Main {
                     String email = scanner.next();
                     System.out.print("Enter Password: ");
                     String password = scanner.next();
+                    System.out.println("_______________________________");
                     User user = new User();
                     user.setName(name);
                     user.setEmail(email);
@@ -242,6 +298,7 @@ public class Main {
                     String email = scanner.next();
                     System.out.print("Enter Password: ");
                     String password = scanner.next();
+                    System.out.println("_______________________________");
                     int identity = dao.Login(email, password);
 
                     if (identity == 1) {

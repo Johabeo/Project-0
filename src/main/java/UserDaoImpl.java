@@ -19,7 +19,7 @@ public class UserDaoImpl implements UserDao {
         preparedStatement.setString(3, user.getPassword());
         int count = preparedStatement.executeUpdate();
         if (count > 0) {
-            System.out.println("user saved");
+            System.out.println("Login Saved");
         } else {
             System.out.println("OOps!, something went wrong");
         }
@@ -128,7 +128,7 @@ public class UserDaoImpl implements UserDao {
         Statement statement = connection.createStatement();
         ResultSet resultSet = statement.executeQuery(sql);
         resultSet.next();
-        int loginType = resultSet.getInt(1);
-        return loginType;
+        int id = resultSet.getInt(1);
+        return id;
     }
 }

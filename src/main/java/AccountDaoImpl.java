@@ -112,6 +112,23 @@ public class AccountDaoImpl implements AccountDao {
     }
 
     @Override
+    public List<Account> getActiveAccountsById(int Id) throws SQLException {
+        List<Account> accounts = new ArrayList<>();
+        String sql = "select * from accounts where status = 0 and userId =" + Id;
+        Statement statement = connection.createStatement();
+        ResultSet resultSet = statement.executeQuery(sql);
+        while (resultSet.next()) {
+            int id = resultSet.getInt(1);
+            int userId = resultSet.getInt(2);
+            int status = resultSet.getInt(3);
+            int balance = resultSet.getInt(4);
+            Account account = new Account(id, userId, status, balance);
+            accounts.add(account);
+        }
+        return accounts;
+    }
+
+    @Override
     public Account getAccountById(int id) throws SQLException {
         Account account = new Account();
         String sql = "select * from accounts where userId = " + id;
@@ -153,7 +170,7 @@ public class AccountDaoImpl implements AccountDao {
     @Override
     public int getAccountStatusById(int id) throws SQLException {
         Account account = new Account();
-        String sql = "select * from accounts where userId = " + id;
+        String sql = "select * from accounts where id = " + id;
         Statement statement = connection.createStatement();
         ResultSet resultSet = statement.executeQuery(sql);
         resultSet.next();
